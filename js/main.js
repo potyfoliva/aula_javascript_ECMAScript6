@@ -259,4 +259,110 @@ var {name} = objDA;
 console.log(name);
 
 
+//aula 3
+//symbols e iterators
+//A função Symbol() retorna um valor do tipo símbolo (symbol), 
+//tem propriedades estáticas que expõem vários membros dos objetos nativos, 
+//possuem métodos estáticos que expõem o registro de símbolos globais 
+//e se parecem com uma classe de objeto nativo, 
+//mas estão incompletos como construtor porque não suportam a sintaxe "new Symbol()" .
+//Cada valor símbolo retornado de Symbol() é único. 
+//Um símbolo pode ser usado como o identificador para propriedades de objetos; 
+//esse é o único propósito do tipo de dado.
+const idUnico = Symbol('ola');
+console.log(idUnico);
+
+//gerar propriedades 
+const objSymbol = {
+	[idUnico]: 'ola' 
+};
+console.log(objSymbol);
+
+//well known symbols
+Symbol.iterator
+Symbol.split
+Symbol.toStringTag
+
+//Symbol sem ecma6
+const arraySymbol = [1,2,3,4];
+const it = arraySymbol[Symbol.iterator]();
+while(true){
+	let {value, done} = it.next();
+	
+	if(done){
+		break;
+	}
+	console.log(value);
+}
+
+
+//symbol com ecma6
+const arraySymbol2 = [1,2,3,4];
+for(let value of arraySymbol2){
+	console.log(value);
+}
+const string = 'Poty Ferreira';
+for(let value of string){
+	console.log(value);
+}
+
+const arraySymbolComSpread = [...string, ...arraySymbol2];
+console.log(arraySymbolComSpread);
+
+
+//iterators são uma interface
+const objIterator = {
+	values: [5,6,7,8],
+	[Symbol.iterator](){
+		let i = 0;		
+		return {
+			next: () => {
+				i++;
+				return{
+					value: this.values[i-1],
+					done: i>this.values.length
+				}
+				
+			}
+		}
+	}
+};
+
+
+const iterator = objIterator[Symbol.iterator]();
+for(let value of objIterator){
+	console.log(value);
+}
+
+
+//generators são funções com pausa e interagem atraves da interface de iterator
+//O objeto Generator é retornado por generator function e conforme iterable protocol e o iterator protocol.
+//https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Generator
+function* numerosNaturais(){
+	let num = 0;
+	while(true){
+		yield num;
+		num++;
+	}
+}
+const iterador = numerosNaturais();
+console.log(iterador.next());
+console.log(iterador.next());
+console.log(iterador.next());
+
+//usando generator como forma de construir iterador
+const objGenerator = {
+	values: [5,6,7,8],
+	*[Symbol.iterator](){
+		for(var i=0; i < this.values.length; i++){
+			yield this.values[i];
+		}		
+	}
+};
+
+for(let valor of objGenerator){
+	console.log(valor);
+}
+
+
 
