@@ -311,6 +311,7 @@ console.log(arraySymbolComSpread);
 
 
 //iterators são uma interface
+//https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide/Iteratores_e_geradores
 const objIterator = {
 	values: [5,6,7,8],
 	[Symbol.iterator](){
@@ -365,4 +366,86 @@ for(let valor of objGenerator){
 }
 
 
+//aula 4
+//callbacks e promises
+//Uma função callback é uma função passada a outra função como argumento, 
+//que é então invocado dentro da função externa para completar algum tipo de rotina ou ação.
+//https://developer.mozilla.org/pt-BR/docs/Glossario/Callback_function
+//Promise é um objeto usado para processamento assíncrono. Um Promise (de "promessa") 
+//representa um valor que pode estar disponível agora, no futuro ou nunca.
+//https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
+const facaAlgoPromise = new Promise((resolve, reject) => {
+	
+	setTimeout(function(){
+		resolve('primeiro dado');
+		},1000);
+	
+} );
+
+const facaOutraPromise = new Promise((resolve, reject) => {
+	setTimeout(function(){
+		resolve('segundo dado');
+		},1000);
+	
+} );
+
+facaAlgoPromise
+	.then(dado => {console.log(dado); return facaOutraPromise})
+	.then(dado2 => console.log(dado2))
+	.catch(error => console.log(error));
+	
+	
+//fetch
+//A API Fetch fornece uma interface JavaScript para acessar e manipular partes do pipeline HTTP, 
+//tais como os pedidos e respostas. Ela também fornece o método global fetch() 
+//que fornece uma maneira fácil e lógica para buscar recursos de forma assíncrona através da rede.
+//https://developer.mozilla.org/pt-BR/docs/Web/API/Fetch_API/Using_Fetch
+/*fetch('/data.json').then(responseStream => {
+	responseStream.json().then(data => {
+		console.log(data);
+	})
+});*/
+
+//async /await
+//A declaração async function define uma função assíncrona, que retorna um objeto AsyncFunction.
+//https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Statements/funcoes_assincronas
+//O operador await é utilizado para esperar por uma Promise. Ele pode ser usado apenas dentro de uma async function.
+//https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Operators/await	
+
+const asyncTimer = () =>
+	new Promise ((resolve, reject) => {
+		setTimeout(() => {
+			resolve(12345);
+		}, 1000);
+	});
+	
+const funcaoSimples = async () => {
+	const dado = await asyncTimer();
+	return dado;
+};
+
+funcaoSimples()
+	.then(dado => {
+		console.log(dado);
+	})
+	.catch(erro => {
+		console.log(erro);	
+	});
+	
+	
+	
+//programação assincrona node
+//EventEmitter :  https://nodejs.org/api/events.html
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
+emitter.on('usuariologado', dado =>{
+	console.log(dado);
+});
+
+emitter.emit('usuario logado', {user: 'Poty'});
+
+//aula 5
+//testes, tdd e bdd
+//tdd: https://www.devmedia.com.br/tdd-fundamentos-do-desenvolvimento-orientado-a-testes/28151
+//bdd: https://medium.com/@elisabethmamede/bdd-e-teste-de-software-a708df3502e
